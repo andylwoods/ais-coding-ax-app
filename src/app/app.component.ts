@@ -90,4 +90,9 @@ export class AppComponent {
       window.URL.revokeObjectURL(url);
     }
   }
+
+  setOutputFormat(format: 'json' | 'xml'): void {
+    this.outputFormat.set(format);
+    this.analysisResult.set(undefined);
+  }
 }

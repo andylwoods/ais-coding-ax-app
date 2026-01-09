@@ -30,12 +30,12 @@
       <label class="form-label">Results Format</label>
       <div class="radio-options">
         <label class="radio-label">
-          <input type="radio" name="format" value="json" [checked]="outputFormat() === 'json'" (change)="outputFormat.set('json')">
+          <input type="radio" name="format" value="json" [checked]="outputFormat() === 'json'" (change)="setOutputFormat('json')">
           <span class="radio-button"></span>
           JSON
         </label>
         <label class="radio-label">
-          <input type="radio" name="format" value="xml" [checked]="outputFormat() === 'xml'" (change)="outputFormat.set('xml')">
+          <input type="radio" name="format" value="xml" [checked]="outputFormat() === 'xml'" (change)="setOutputFormat('xml')">
           <span class="radio-button"></span>
           XML
         </label>
