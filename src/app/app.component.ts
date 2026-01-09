@@ -22,10 +22,10 @@ export class AppComponent {
 
   consonantCountsArray = computed(() => {
     const result = this.analysisResult();
-    if (!result || !result.ConsonantCounts) {
+    if (!result || !result.consonantCounts) {
       return [];
     }
-    return Object.entries(result.ConsonantCounts).map(([key, value]) => ({ key, value }));
+    return Object.entries(result.consonantCounts).map(([key, value]) => ({ key, value }));
   });
 
   onFileSelected(event: Event): void {
@@ -52,6 +52,14 @@ export class AppComponent {
           next: result => {
             this.analysisResult.set(result);
             this.isLoading.set(false);
+
+            console.log('Slow bike count:', result.slowBikeCount);
+            console.log('Consonant counts:');
+            if (result.consonantCounts) {
+              for (const [char, count] of Object.entries(result.consonantCounts)) {
+                console.log(`  ${char}: ${count}`);
+              }
+            }
           },
           error: err => {
             console.error('Error during text analysis:', err);
