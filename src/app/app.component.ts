@@ -19,6 +19,7 @@ export class AppComponent {
   analysisResult = signal<any>(undefined);
   selectedFileName = signal('No file chosen');
   isLoading = signal(false);
+  outputFormat = signal<'json' | 'xml'>('json');
 
   consonantCountsArray = computed(() => {
     const result = this.analysisResult();
@@ -48,18 +49,10 @@ export class AppComponent {
       const reader = new FileReader();
       reader.onload = (e) => {
         const text = e.target?.result as string;
-        this.textAnalysisService.analyzeText(text).subscribe({
+        this.textAnalysisService.analyzeText(text, this.outputFormat()).subscribe({
           next: result => {
             this.analysisResult.set(result);
             this.isLoading.set(false);
-
-            console.log('Slow bike count:', result.slowBikeCount);
-            console.log('Consonant counts:');
-            if (result.consonantCounts) {
-              for (const [char, count] of Object.entries(result.consonantCounts)) {
-                console.log(`  ${char}: ${count}`);
-              }
-            }
           },
           error: err => {
             console.error('Error during text analysis:', err);
@@ -86,11 +79,13 @@ export class AppComponent {
   downloadResults(): void {
     const result = this.analysisResult();
     if (result) {
-      const blob = new Blob([JSON.stringify(result, null, 2)], { type: 'application/json' });
+      const format = this.outputFormat();
+      const isJson = format === 'json';
+      const blob = new Blob([isJson ? JSON.stringify(result, null, 2) : result], { type: isJson ? 'application/json' : 'application/xml' });
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'analysis-results.json';
+      a.download = `analysis-results.${format}`;
       a.click();
       window.URL.revokeObjectURL(url);
     }

@@ -8,9 +8,7 @@ import { Observable } from 'rxjs';
 export class TextAnalysisService {
   private http = inject(HttpClient);
 
-  analyzeText(text: string): Observable<any> {
-    // Assuming the .NET controller is running on the same host
-    // and has an endpoint at /api/textanalysis
-    return this.http.post('https://ais-app-backend-1000379470338.us-central1.run.app/api/TextAnalysis', { text });
+  analyzeText(text: string, outputFormat: 'json' | 'xml'): Observable<any> {
+    return this.http.post('https://ais-app-backend-1000379470338.us-central1.run.app/api/TextAnalysis', { text, OutputFormat: outputFormat });
   }
 }

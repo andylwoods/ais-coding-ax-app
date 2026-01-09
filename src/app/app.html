@@ -41,31 +41,51 @@
       <h2 class="card-title">Analysis Results</h2>
       <p class="card-subtitle">Results for file: {{ selectedFileName() }}</p>
 
-      <div class="slow-bike-card">
-        <div class="slow-bike-info">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="bike-icon"><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="18.5" cy="17.5" r="3.5"/><path d="M15 6l-4 4h3l-4 4"/><path d="M2 17.5h2.5l2-4L9 17.5h8.5"/></svg>
-          <span>'slow bike' occurrences</span>
+      @if (outputFormat() === 'json') {
+        <div class="slow-bike-card">
+          <div class="slow-bike-info">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="bike-icon"><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="18.5" cy="17.5" r="3.5"/><path d="M15 6l-4 4h3l-4 4"/><path d="M2 17.5h2.5l2-4L9 17.5h8.5"/></svg>
+            <span>'slow bike' occurrences</span>
+          </div>
+          <span class="slow-bike-count">{{ analysisResult().slowBikeCount }}</span>
         </div>
-        <span class="slow-bike-count">{{ analysisResult().slowBikeCount }}</span>
-      </div>
 
-      <h3 class="consonant-counts-title">Consonant Counts</h3>
-      @if (consonantCountsArray().length > 0) {
-        <div class="consonant-grid">
-          @for (item of consonantCountsArray(); track item.key) {
-            <div class="consonant-card">
-              <span class="consonant-char">{{ item.key.toUpperCase() }}</span>
-              <span class="consonant-count">{{ item.value }}</span>
-            </div>
-          }
-        </div>
+        <h3 class="consonant-counts-title">Consonant Counts</h3>
+        @if (consonantCountsArray().length > 0) {
+          <div class="consonant-grid">
+            @for (item of consonantCountsArray(); track item.key) {
+              <div class="consonant-card">
+                <span class="consonant-char">{{ item.key.toUpperCase() }}</span>
+                <span class="consonant-count">{{ item.value }}</span>
+              </div>
+            }
+          </div>
+        } @else {
+          <p>No consonants were found in the file.</p>
+        }
       } @else {
-        <p>No consonants were found in the file.</p>
+        <p>XML results are not displayed. Please download the file to view them.</p>
       }
+
+      <div class="form-group radio-group-container">
+        <label class="form-label">Output Format</label>
+        <div class="radio-options">
+          <label class="radio-label">
+            <input type="radio" name="format" value="json" [checked]="outputFormat() === 'json'" (change)="outputFormat.set('json')">
+            <span class="radio-button"></span>
+            JSON
+          </label>
+          <label class="radio-label">
+            <input type="radio" name="format" value="xml" [checked]="outputFormat() === 'xml'" (change)="outputFormat.set('xml')">
+            <span class="radio-button"></span>
+            XML
+          </label>
+        </div>
+      </div>
 
       <button class="download-button" (click)="downloadResults()">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        <span>Download Results as JSON</span>
+        <span>Download Results</span>
       </button>
     </div>
   }
