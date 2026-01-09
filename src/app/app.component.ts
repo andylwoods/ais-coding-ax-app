@@ -1,16 +1,19 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { TextAnalysisService } from './text-analysis.service';
 import { CommonModule } from '@angular/common';
+import { ToastService } from './toast.service';
+import { ToastComponent } from './toast.component';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.html',
   styleUrls: ['./app.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule]
+  imports: [CommonModule, ToastComponent]
 })
 export class AppComponent {
   private textAnalysisService = inject(TextAnalysisService);
+  private toastService = inject(ToastService);
   isFileSelected = signal(false);
   selectedFile: File | null = null;
   analysisResult = signal<any>(undefined);
@@ -45,9 +48,16 @@ export class AppComponent {
       const reader = new FileReader();
       reader.onload = (e) => {
         const text = e.target?.result as string;
-        this.textAnalysisService.analyzeText(text).subscribe(result => {
-          this.analysisResult.set(result);
-          this.isLoading.set(false);
+        this.textAnalysisService.analyzeText(text).subscribe({
+          next: result => {
+            this.analysisResult.set(result);
+            this.isLoading.set(false);
+          },
+          error: err => {
+            console.error('Error during text analysis:', err);
+            this.toastService.show('An error occurred during analysis.');
+            this.isLoading.set(false);
+          }
         });
       };
       reader.readAsText(this.selectedFile);
