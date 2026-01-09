@@ -26,6 +26,22 @@
       </div>
     </div>
 
+    <div class="form-group radio-group-container">
+      <label class="form-label">Results Format</label>
+      <div class="radio-options">
+        <label class="radio-label">
+          <input type="radio" name="format" value="json" [checked]="outputFormat() === 'json'" (change)="outputFormat.set('json')">
+          <span class="radio-button"></span>
+          JSON
+        </label>
+        <label class="radio-label">
+          <input type="radio" name="format" value="xml" [checked]="outputFormat() === 'xml'" (change)="outputFormat.set('xml')">
+          <span class="radio-button"></span>
+          XML
+        </label>
+      </div>
+    </div>
+
     <button class="analyze-button" [disabled]="!isFileSelected() || isLoading()" (click)="analyzeText()">
       @if (isLoading()) {
         <div class="loader"></div>
@@ -64,24 +80,8 @@
           <p>No consonants were found in the file.</p>
         }
       } @else {
-        <p>XML results are not displayed. Please download the file to view them.</p>
+        <pre class="xml-results">{{ analysisResult() }}</pre>
       }
-
-      <div class="form-group radio-group-container">
-        <label class="form-label">Output Format</label>
-        <div class="radio-options">
-          <label class="radio-label">
-            <input type="radio" name="format" value="json" [checked]="outputFormat() === 'json'" (change)="outputFormat.set('json')">
-            <span class="radio-button"></span>
-            JSON
-          </label>
-          <label class="radio-label">
-            <input type="radio" name="format" value="xml" [checked]="outputFormat() === 'xml'" (change)="outputFormat.set('xml')">
-            <span class="radio-button"></span>
-            XML
-          </label>
-        </div>
-      </div>
 
       <button class="download-button" (click)="downloadResults()">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>

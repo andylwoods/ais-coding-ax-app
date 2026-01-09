@@ -257,7 +257,7 @@ body {
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  border: 2px solid var(--border-color);
+  border: 2px solid var(--primary-color);
   background-color: var(--card-background-color);
   margin-right: 8px;
   transition: background-color 0.2s, border-color 0.2s;
@@ -279,4 +279,14 @@ body {
   border-radius: 50%;
   background-color: var(--card-background-color);
   transform: translate(-50%, -50%);
+}
+
+.xml-results {
+  background-color: #f8f9fa;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 16px;
+  white-space: pre-wrap;
+  word-break: break-all;
+  font-family: monospace;
 }
