@@ -11,6 +11,6 @@ export class TextAnalysisService {
   analyzeText(text: string): Observable<any> {
     // Assuming the .NET controller is running on the same host
     // and has an endpoint at /api/textanalysis
-    return this.http.post('https://myapp-1000379470338.us-central1.run.app/api/textanalysis', { text });
+    return this.http.post('https://ais-app-backend-1000379470338.us-central1.run.app/api/TextAnalysis', { text });
   }
 }
