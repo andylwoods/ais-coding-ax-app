@@ -57,30 +57,26 @@
       <h2 class="card-title">Analysis Results</h2>
       <p class="card-subtitle">Results for file: {{ selectedFileName() }}</p>
 
-      @if (outputFormat() === 'json') {
-        <div class="slow-bike-card">
-          <div class="slow-bike-info">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="bike-icon"><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="18.5" cy="17.5" r="3.5"/><path d="M15 6l-4 4h3l-4 4"/><path d="M2 17.5h2.5l2-4L9 17.5h8.5"/></svg>
-            <span>'slow bike' occurrences</span>
-          </div>
-          <span class="slow-bike-count">{{ analysisResult().slowBikeCount }}</span>
+      <div class="slow-bike-card">
+        <div class="slow-bike-info">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="bike-icon"><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="18.5" cy="17.5" r="3.5"/><path d="M15 6l-4 4h3l-4 4"/><path d="M2 17.5h2.5l2-4L9 17.5h8.5"/></svg>
+          <span>'slow bike' occurrences</span>
         </div>
+        <span class="slow-bike-count">{{ slowBikeCount() }}</span>
+      </div>
 
-        <h3 class="consonant-counts-title">Consonant Counts</h3>
-        @if (consonantCountsArray().length > 0) {
-          <div class="consonant-grid">
-            @for (item of consonantCountsArray(); track item.key) {
-              <div class="consonant-card">
-                <span class="consonant-char">{{ item.key.toUpperCase() }}</span>
-                <span class="consonant-count">{{ item.value }}</span>
-              </div>
-            }
-          </div>
-        } @else {
-          <p>No consonants were found in the file.</p>
-        }
+      <h3 class="consonant-counts-title">Consonant Counts</h3>
+      @if (consonantCountsArray().length > 0) {
+        <div class="consonant-grid">
+          @for (item of consonantCountsArray(); track item.key) {
+            <div class="consonant-card">
+              <span class="consonant-char">{{ item.key.toUpperCase() }}</span>
+              <span class="consonant-count">{{ item.value }}</span>
+            </div>
+          }
+        </div>
       } @else {
-        <pre class="xml-results">{{ analysisResult() }}</pre>
+        <p>No consonants were found in the file.</p>
       }
 
       <button class="download-button" (click)="downloadResults()">

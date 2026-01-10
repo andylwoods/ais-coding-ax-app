@@ -21,12 +21,36 @@ export class AppComponent {
   isLoading = signal(false);
   outputFormat = signal<'json' | 'xml'>('json');
 
+  slowBikeCount = computed(() => {
+    const result = this.analysisResult();
+    if (!result) return 0;
+
+    if (this.outputFormat() === 'json') {
+      return result.slowBikeCount;
+    } else {
+      const parser = new DOMParser();
+      const xmlDoc = parser.parseFromString(result, 'application/xml');
+      const count = xmlDoc.querySelector('slowBikeCount')?.textContent;
+      return count ? parseInt(count, 10) : 0;
+    }
+  });
+
   consonantCountsArray = computed(() => {
     const result = this.analysisResult();
-    if (!result || !result.consonantCounts) {
-      return [];
+    if (!result) return [];
+
+    if (this.outputFormat() === 'json') {
+      if (!result.consonantCounts) return [];
+      return Object.entries(result.consonantCounts).map(([key, value]) => ({ key, value }));
+    } else {
+      const parser = new DOMParser();
+      const xmlDoc = parser.parseFromString(result, 'application/xml');
+      const consonantNodes = xmlDoc.querySelectorAll('consonant');
+      return Array.from(consonantNodes).map(node => ({
+        key: node.querySelector('letter')?.textContent || '',
+        value: parseInt(node.querySelector('count')?.textContent || '0', 10)
+      }));
     }
-    return Object.entries(result.consonantCounts).map(([key, value]) => ({ key, value }));
   });
 
   onFileSelected(event: Event): void {
