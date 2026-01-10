@@ -1,3 +1,4 @@
+
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { TextAnalysisService } from './text-analysis.service';
 import { CommonModule } from '@angular/common';
@@ -21,7 +22,7 @@ export class AppComponent {
   isLoading = signal(false);
   outputFormat = signal<'json' | 'xml'>('json');
 
-  slowBikeCount = computed(() => {
+slowBikeCount = computed(() => {
     const result = this.analysisResult();
     if (!result) return 0;
 
@@ -53,6 +54,7 @@ export class AppComponent {
     }
   });
 
+
   onFileSelected(event: Event): void {
     this.analysisResult.set(undefined);
     const input = event.target as HTMLInputElement;
@@ -77,6 +79,10 @@ export class AppComponent {
           next: result => {
             this.analysisResult.set(result);
             this.isLoading.set(false);
+            // Log the analysis results to the console
+            console.log('Slow bike count:', this.slowBikeCount());
+            console.log('Consonant counts:', this.consonantCountsArray());
+
           },
           error: err => {
             console.error('Error during text analysis:', err);
